@@ -2,6 +2,23 @@
   "expo": {
     "name": "my-project",
     "slug": "my-project",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "svg",
+        "json",
+        "vue"
+      ]
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +31,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "*/"
     ],
     "ios": {
       "supportsTablet": true
