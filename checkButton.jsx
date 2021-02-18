@@ -1,8 +1,9 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 //style
 import { vh, vw } from 'react-native-expo-viewport-units'
-import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
+import fontsStyle from './fonts'
 //icons
 import SVGImage from './SVGImage';
 import check from './assets/icons/check'
@@ -16,33 +17,39 @@ svgSource: name of svg import, the svg that will be shown in the white circle ex
 hasCheck: boolean, true means blue check will appear and false otherwise
 */
 export default function buttons({ onPress, text, svgSource, hasCheck }) {
-    const [fontsLoaded] = useFonts({
-        'Rubik': require('./assets/fonts/hee.ttf'),
-        //     'fLogo': require('./fonts/KlavikaMedium-TF.otf')
-    });
 
-    if (!fontsLoaded) {
-        return null
-        // return <AppLoading />;
-    } else {
-        return (
-            <>
-                <View style={styles.spaceOfCheck}></View>
-                <TouchableOpacity style={styles.touchable} onPress={onPress}>
-                    {hasCheck && <View style={styles.blueCircle}>
-                        <SVGImage source={check} height={styles.svgCheck.height} width={styles.svgCheck.width} />
-                    </View>}
-                    <Text style={{ ...styles.text /* , fontFamily: 'Rubik' */ }}>{text}</Text>
-                    <View style={styles.circle}>
-                        {svgSource && <SVGImage source={svgSource} height={styles.svgPicture.height} width={styles.svgPicture.width} />}
-                    </View>
-                </TouchableOpacity>
-            </>
-        )
-    }
+    const [loaded, setLoaded] = useState(false)
+
+    useEffect(() => {
+        (async () => {
+            await Font.loadAsync({
+                'rubic': require('./assets/fonts/Rubik-VariableFont_wght.ttf'),
+            })
+            setLoaded(true)
+        })()
+    }, [])
+
+    return (
+        <>
+            <View style={styles.spaceOfCheck}></View>
+            <TouchableOpacity style={styles.touchable} onPress={onPress}>
+                {hasCheck && <View style={styles.blueCircle}>
+                    <SVGImage source={check} height={styles.svgCheck.height} width={styles.svgCheck.width} />
+                </View>}
+                <Text style={[styles.text, loaded && fontsStyle.rubicFont]}>skdfjalksjfd{text}</Text>
+                <View style={styles.circle}>
+                    {svgSource && <SVGImage source={svgSource} height={styles.svgPicture.height} width={styles.svgPicture.width} />}
+                </View>
+            </TouchableOpacity>
+        </>
+    )
+
 }
 
 const styles = StyleSheet.create({
+    rubicFont: {
+        fontFamily: 'rubic'
+    },
     spaceOfCheck: {
         height: vh(2.4),
     },
